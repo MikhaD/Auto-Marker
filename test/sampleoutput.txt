@@ -1,0 +1,17 @@
+a: [1, 2, 3, 4, 5, 6]
+Maximum: 6
+
+b: abcdef
+Maximum: f
+
+c: (1, 2, 3, 4, 5, 6)
+Maximum: 6
+
+d: {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6}
+Maximum: f
+
+e: {1, 2, 3, 4, 5, 6}
+Maximum: 6
+
+f: a, b, c, d, e, f
+Maximum: f
