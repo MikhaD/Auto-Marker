@@ -5,7 +5,6 @@ __author__ = 'Mikha Davids'
 #eliminate component variables where possible
 #Maybe use a new class for the file being debugged and store script and script path and script dir in that. Perhaps even allow the user to save these objects and reload them
 #Seperate file for GUi boilerplate code?
-import AM
 import Help
 from os.path import isfile
 from tkinter import Tk, Frame, Label, Button, filedialog, scrolledtext, messagebox, BooleanVar
@@ -28,14 +27,14 @@ def toggleFileNames() :
     if b_stdIO.get() :
         frm_IOfileNames.pack_forget()
     else:
-        frm_IOfileNames.pack(padx=i_buffer*3, pady=i_buffer, side='top', anchor='w', fill='both', expand='yes')
+        frm_IOfileNames.pack(padx=i_buffer*3, pady=i_buffer, side='top', anchor='w', fill='both', expand=True)
 
 def togglePromptsInFile() :
     if b_inputPrompts.get() :
-        frm_promptsInFile.pack(padx=i_buffer*3, pady=i_buffer, side='top', anchor='w', fill='both', expand='yes')
+        frm_promptsInFile.pack(padx=i_buffer*3, pady=i_buffer, side='top', anchor='w', fill='both', expand=True)
     else:
         frm_promptsInFile.pack_forget()
-#Apparently the command= parameter cannot have brackets, as it will trigger the function the instant the line is executed. As a result, I have not found a way to call those functions with parameters 
+#Apparently the command= parameter cannot have brackets, as it will trigger the function the instant the line is executed. As a result, I have not found a way to call those functions with parameters
 def scriptBrowse() :
     s_filePath = filedialog.askopenfilename(filetypes=(('Python scripts', '*.py'), ('All files', '*.*')))
     if s_filePath:
@@ -53,7 +52,7 @@ def outputFileBrowse() :
     if s_filePath:
         edt_outputFile.delete(0,'end')
         edt_outputFile.insert(0, s_filePath)
-    
+
 def exitWindow() :
     if bs_settings.get() or bs_files.get():
         al_booleanVars = [var for var in globals().keys() if var[:2] == 'b_']
@@ -82,7 +81,7 @@ def run() :
         if not isfile(AM_window.scriptPath):
             messagebox.showwarning('Script missing', 'The file you specified to mark does not exist or is incorrectly named.')
             return
-        
+
         il_pathEnd = AM_window.scriptPath.rfind('/')
         if il_pathEnd == -1 :
             il_pathEnd = AM_window.scriptPath.rfind('\\')
@@ -150,7 +149,7 @@ lbl_script = Label(frm_script, text='Path of script to mark:', font=fnt_label, c
 lbl_script.bind('<Button-1>', lambda _ : messagebox.showinfo("Information", Help.script))
 lbl_script.pack(side='top', anchor='w')
 edt_script = ttk.Entry(frm_script)
-edt_script.pack(side='left', anchor='w', fill='both', expand='yes')
+edt_script.pack(side='left', anchor='w', fill='both', expand=True)
 edt_script.focus()
 btn_scriptBrowse = Button(frm_script, bg='white', text=s_browseButtonText, cursor='hand2', command=scriptBrowse)
 btn_scriptBrowse.pack(side='left', anchor='w')
@@ -171,7 +170,7 @@ lbl_inputFile = Label(frm_InputFile, text='Input file path:', font=fnt_label, cu
 lbl_inputFile.bind('<Button-1>', lambda _ : messagebox.showinfo('Information', Help.inputFile))
 lbl_inputFile.pack(side='top', anchor='w')
 edt_inputFile = ttk.Entry(frm_InputFile)
-edt_inputFile.pack(side='left', anchor='w', fill='both', expand='yes')
+edt_inputFile.pack(side='left', anchor='w', fill='both', expand=True)
 btn_inputFileBrowse = Button(frm_InputFile, bg='white', text=s_browseButtonText, cursor='hand2', command=inputFileBrowse)
 btn_inputFileBrowse.pack(side='left', anchor='w')
 frm_InputFile.pack(side='top', anchor='w', fill='both')
@@ -181,7 +180,7 @@ lbl_outputFile = Label(frm_OutputFile, text='Output file path:', font=fnt_label,
 lbl_outputFile.bind('<Button-1>', lambda _ : messagebox.showinfo('Information', Help.outputFile))
 lbl_outputFile.pack(side='top', anchor='w')
 edt_outputFile = ttk.Entry(frm_OutputFile)
-edt_outputFile.pack(side='left', anchor='w', fill='both', expand='yes')
+edt_outputFile.pack(side='left', anchor='w', fill='both', expand=True)
 btn_outputFileBrowse = Button(frm_OutputFile, bg='white', text=s_browseButtonText, cursor='hand2', command=outputFileBrowse)
 btn_outputFileBrowse.pack(side='left', anchor='w')
 frm_OutputFile.pack(side='top', anchor='w', fill='both')
@@ -244,13 +243,13 @@ cbx_files.pack(side='bottom', anchor='sw')
 cbx_settings = ttk.Checkbutton(frm_input, text='Remember settings', cursor='hand2', variable=bs_settings)
 cbx_settings.pack(side='bottom', anchor='sw')
 
-frm_input.pack(side='left', anchor='w', padx=i_buffer, pady=i_buffer, fill='both', expand='yes')
+frm_input.pack(side='left', anchor='w', padx=i_buffer, pady=i_buffer, fill='both', expand=True)
 
 btn_run = Button(frm_input, height=i_buffer//4, bg='white', text='Run', font=('Arial', 12), cursor='hand2', command=run)
 btn_run.pack(pady=i_buffer, anchor='center', fill='x')
 
 sctxt_output = scrolledtext.ScrolledText(AM_window, state='disabled')
-sctxt_output.pack(side='right', anchor='e', padx=i_buffer, pady=i_buffer, fill='both', expand='yes')
+sctxt_output.pack(side='right', anchor='e', padx=i_buffer, pady=i_buffer, fill='both', expand=True)
 
 AM_window.protocol('WM_DELETE_WINDOW', exitWindow)
 AM_window.mainloop()

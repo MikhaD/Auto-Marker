@@ -1,0 +1,176 @@
+from tkinter import END, Frame, Label, Tk, Widget, Button as BTN, Event, Canvas
+from tkinter.scrolledtext import ScrolledText as ST
+from typing import Any, Callable, Literal, Optional, Union
+from Settings import SETTINGS
+
+class Heading(Label):
+	def __init__(self, master: Union[Widget, Tk], text: str, level: Literal[1, 2, 3, 4]=1, code: bool=False,**kwargs: Any):
+		command = kwargs.pop("command", None)
+		if   level == 2: font_size = SETTINGS.font.size.h2
+		elif level == 3: font_size = SETTINGS.font.size.h3
+		elif level == 4: font_size = SETTINGS.font.size.regular
+		else:            font_size = SETTINGS.font.size.h1
+		super().__init__(master,
+			text=text,
+			fg=SETTINGS.theme.fg_0,
+			bg=kwargs.pop("bg", SETTINGS.theme.bg_0),
+			font=(SETTINGS.font.code if code else SETTINGS.font.regular, font_size, "bold"),
+			**kwargs
+		)
+		if command: self.bind("<Button-1>", command)
+
+class Text(Label):
+	def __init__(self, master: Union[Widget, Tk], text: str, bold: bool=False, **kwargs: Any):
+		super().__init__(master,
+			text=text,
+			font=(SETTINGS.font.regular,
+				SETTINGS.font.size.regular,
+				"bold" if bold else "normal"),
+			fg=SETTINGS.theme.fg_0,
+			bg=SETTINGS.theme.bg_0,
+			wraplength=500,
+			**kwargs
+		)
+
+class Button(BTN):
+	def __init__(self, master: Union[Widget, Tk], text: str, command: Callable, **kwargs: Any):
+		super().__init__(master,
+			text=text,
+			font=(SETTINGS.font.regular,
+				SETTINGS.font.size.button, "bold"),
+			fg=SETTINGS.theme.fg_0,
+			bg=SETTINGS.theme.accent_0,
+			activebackground=SETTINGS.theme.accent_1,
+			activeforeground=SETTINGS.theme.fg_0,
+			width=20,
+			pady=5,
+			border=0,
+			cursor="hand2",
+			command=command,
+			**kwargs
+		)
+
+class ScrolledText(ST):
+	def __init__(self, master: Union[Widget, Tk], **kwargs: Any):
+		super().__init__(master,
+			font=(SETTINGS.font.code,
+				SETTINGS.font.size.code),
+			bg=SETTINGS.theme.bg_1,
+			fg=SETTINGS.theme.fg_1,
+			borderwidth=0,
+			highlightthickness=15,
+			highlightbackground=SETTINGS.theme.bg_1,
+			highlightcolor=SETTINGS.theme.bg_1,
+			**kwargs
+		)
+		self.tag_configure("red", foreground=SETTINGS.theme.red)
+		self.tag_configure("green", foreground=SETTINGS.theme.green)
+		self.tag_configure("yellow", foreground=SETTINGS.theme.yellow)
+
+	def print(self, text: str, tag: Optional[str]=None, end: str="\n"):
+		if not tag:
+			self.insert(END, text+end)
+		else:
+			self.insert(END, text+end, tag)
+
+	def clear(self):
+		self.delete("1.0", END)
+
+class Details(Frame):
+	_title: str
+	def __init__(self, master: Union[Widget, Tk], title: str, body: Widget, level: Literal[1, 2, 3, 4] = 1, open: bool = True, **kwargs: Any):
+		self.open = open
+		self.title = title
+		super().__init__(master,
+			bg=SETTINGS.theme.bg_0,
+			**kwargs
+		)
+		self.summary = Heading(self, self.title, level, cursor="hand2", command=self.toggle)
+		self.summary.pack(anchor="n")
+
+	def set_body(self, body: Widget):
+		self.body = body
+		if self.open: self.body.pack(anchor="n")
+
+	@property
+	def title(self): return f"{'▼' if self.open else '►'} {self._title}"
+
+	@title.setter
+	def title(self, value: str): self._title = value
+
+	def toggle(self, e: Event):
+		self.open = not self.open
+		self.summary.configure(text=self.title)
+		if self.open:
+			self.body.pack(anchor="n")
+		else:
+			self.body.pack_forget()
+
+class FileIcon(Canvas):
+	OUTLINE = ((3, 3), (3, 28), (23, 28), (23, 11), (15, 3))
+	def __init__(self, root: Union[Widget, Tk], found: bool, **kwargs: Any):
+		super().__init__(root, highlightthickness=0, **kwargs)
+		self.found = found
+
+	@property
+	def found(self) -> bool:
+		return self._found
+
+	@found.setter
+	def found(self, value: bool):
+		self._found = value
+		self.delete("all")
+		if value:
+			self.draw_found()
+		else:
+			self.draw_not_found()
+
+	def draw_found(self):
+		self.create_polygon(*FileIcon.OUTLINE, fill=SETTINGS.theme.green, width=0)
+		self.create_line((6, 15), (11, 21), width=4, fill=SETTINGS.theme.bg_2)
+		self.create_line((10, 20), (18, 11), width=4, fill=SETTINGS.theme.bg_2)
+
+	def draw_not_found(self):
+		self.create_polygon(*FileIcon.OUTLINE, fill=SETTINGS.theme.red, width=0)
+		self.create_line((8, 12), (18, 22), width=4, fill=SETTINGS.theme.bg_2)
+		self.create_line((18, 12), (8, 22), width=4, fill=SETTINGS.theme.bg_2)
+
+class FileWidget(Frame):
+	def __init__(self, master: Union[Widget, Tk], filename: str, trials: int, **kwargs: Any):
+		super().__init__(master,
+			width=100,
+			bg=SETTINGS.theme.bg_2,
+			cursor="hand2",
+			**kwargs
+		)
+		self.bind("<Button-1>", self.inc)
+
+		self.icon = FileIcon(self, False, width=22, height=27, bg=SETTINGS.theme.bg_2)
+		self.icon.pack(side="left", padx=5)
+		self.title = Heading(self, filename, 3, code=True, bg=SETTINGS.theme.bg_2, command=self.inc)
+		self.title.pack(side="left", padx=10, pady=5)
+		self.filename = filename
+
+		self._trials = [0, trials]
+		self.passed_label = Heading(self, f"0/{trials}", 3, code=True, bg=SETTINGS.theme.bg_2, command=self.inc)
+		self.passed_label.pack(side="right", padx=10, pady=5)
+
+	@property
+	def trials(self) -> int:
+		return self._trials[0]
+
+	@trials.setter
+	def trials(self, value: int):
+		self._trials[0] = value
+		self.passed_label.configure(text=f"{value}/{self._trials[1]}")
+
+	def inc(self, e: Event):
+		self.trials += 1
+# class MultiPanel(Frame):
+# 	def __init__(self, master: Union[Widget, Tk], **kwargs: Any):
+# 		super().__init__(master,
+# 			bg=SETTINGS.theme.bg_0,
+# 			**kwargs
+# 		)
+# 		self.panels = []
+# 		self.current = None
