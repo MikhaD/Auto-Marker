@@ -36,3 +36,8 @@ In order to use this automatic marker you will need python 3 and a file containi
 }
 ```
 At the moment it only works with Java code, but I plan to add support for python in the near future.
+## Testing
+Run the following command in the root directory to perform the tests:
+```bash
+py -m tests
+```
