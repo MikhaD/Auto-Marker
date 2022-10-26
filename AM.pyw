@@ -29,7 +29,9 @@ labels["am"].pack(anchor="n", pady=Window.padding)
 config = Config(options)
 config.pack(anchor="n", pady=Window.padding)
 
-FileWidget(options, "Palindrome", 7).pack(anchor="n", pady=Window.padding)
+FileWidget(options, "Palindrome", 7).pack(anchor="n", padx=Window.padding, pady=Window.padding/2)
+FileWidget(options, "Cycling", 7).pack(anchor="n", padx=Window.padding, pady=Window.padding/2)
+FileWidget(options, "Prime", 7).pack(anchor="n", padx=Window.padding, pady=Window.padding/2)
 # In order for the window to resize correctly, both output and options need to be frames
 out_frame = Frame(root, bg=SETTINGS.theme.bg_0, width=300)
 out_frame.pack(side="right", fill="both", expand=True)

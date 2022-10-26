@@ -78,7 +78,7 @@ class ScrolledText(ST):
 
 class Details(Frame):
 	_title: str
-	def __init__(self, master: Union[Widget, Tk], title: str, body: Widget, level: Literal[1, 2, 3, 4] = 1, open: bool = True, **kwargs: Any):
+	def __init__(self, master: Union[Widget, Tk], title: str, body: Widget, level: Literal[1, 2, 3, 4] = 1, open: bool = True, width: int = 0, **kwargs: Any):
 		self.open = open
 		self.title = title
 		super().__init__(master,
@@ -86,11 +86,14 @@ class Details(Frame):
 			**kwargs
 		)
 		self.summary = Heading(self, self.title, level, cursor="hand2", command=self.toggle)
+		if width:
+			self.summary.configure(width=width)
 		self.summary.pack(anchor="n")
 
 	def set_body(self, body: Widget):
 		self.body = body
-		if self.open: self.body.pack(anchor="n")
+		self.body.config(bg=SETTINGS.theme.bg_0) # type: ignore
+		if self.open: self.body.pack(anchor="n", fill="x")
 
 	@property
 	def title(self): return f"{'▼' if self.open else '►'} {self._title}"
@@ -102,15 +105,15 @@ class Details(Frame):
 		self.open = not self.open
 		self.summary.configure(text=self.title)
 		if self.open:
-			self.body.pack(anchor="n")
+			self.body.pack(anchor="n", fill="x")
 		else:
 			self.body.pack_forget()
 
 class FileIcon(Canvas):
 	OUTLINE = ((3, 3), (3, 28), (23, 28), (23, 11), (15, 3))
-	def __init__(self, root: Union[Widget, Tk], found: bool, **kwargs: Any):
+	def __init__(self, root: Union[Widget, Tk], is_found: bool, **kwargs: Any):
 		super().__init__(root, highlightthickness=0, **kwargs)
-		self.found = found
+		self.found = is_found
 
 	@property
 	def found(self) -> bool:
@@ -138,22 +141,21 @@ class FileIcon(Canvas):
 class FileWidget(Frame):
 	def __init__(self, master: Union[Widget, Tk], filename: str, trials: int, **kwargs: Any):
 		super().__init__(master,
-			width=100,
 			bg=SETTINGS.theme.bg_2,
 			cursor="hand2",
 			**kwargs
 		)
-		self.bind("<Button-1>", self.inc)
+		self.bind("<Button-1>", self.__action)
 
 		self.icon = FileIcon(self, False, width=22, height=27, bg=SETTINGS.theme.bg_2)
-		self.icon.pack(side="left", padx=5)
-		self.title = Heading(self, filename, 3, code=True, bg=SETTINGS.theme.bg_2, command=self.inc)
-		self.title.pack(side="left", padx=10, pady=5)
+		self.icon.pack(side="left", padx=5, pady=5)
+		self.title = Heading(self, filename, 3, code=True, bg=SETTINGS.theme.bg_2, width=30, anchor="w", command=self.__action)
+		self.title.pack(side="left", padx=10)
 		self.filename = filename
 
 		self._trials = [0, trials]
-		self.passed_label = Heading(self, f"0/{trials}", 3, code=True, bg=SETTINGS.theme.bg_2, command=self.inc)
-		self.passed_label.pack(side="right", padx=10, pady=5)
+		self.passed_label = Heading(self, f"0/{trials}", 3, code=True, bg=SETTINGS.theme.bg_2, command=self.__action)
+		self.passed_label.pack(side="left", padx=10)
 
 	@property
 	def trials(self) -> int:
@@ -164,8 +166,9 @@ class FileWidget(Frame):
 		self._trials[0] = value
 		self.passed_label.configure(text=f"{value}/{self._trials[1]}")
 
-	def inc(self, e: Event):
-		self.trials += 1
+	def __action(self, e: Event):
+		# self.trials += 1
+		self.icon.found = not self.icon.found
 # class MultiPanel(Frame):
 # 	def __init__(self, master: Union[Widget, Tk], **kwargs: Any):
 # 		super().__init__(master,
