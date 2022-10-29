@@ -1,4 +1,6 @@
 # Auto Marker
+![min version](https://img.shields.io/static/v1?label=python&message=v10.0%2B&color=3776ab&logo=python)
+
 This is a tool to automatically validate the correctness of your code by passing it input via the command line and comparing the output to the expected output. It is designed to be similar to the Automarker available to Computer Science students at the University of Cape Town via Vula.
 ## Inspiration
 I was inspired to make this to help a friend practice on a set of questions she did not have access to Vula's Automarker for. Its original purpose was for testing code for other people's tests or past tests where UCTs Automarker is not available.
@@ -36,8 +38,3 @@ In order to use this automatic marker you will need python 3 and a file containi
 }
 ```
 At the moment it only works with Java code, but I plan to add support for python in the near future.
-## Testing
-Run the following command in the root directory to perform the tests:
-```bash
-py -m tests
-```

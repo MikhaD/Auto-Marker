@@ -1,6 +1,6 @@
 from tkinter import Frame, Tk
 from tkinter import filedialog as fd
-from typing import Union
+from ConfigFile import ConfigFile
 
 from Settings import SETTINGS
 from Widgets import Button, Details, Heading, Text
@@ -23,32 +23,37 @@ class Window(Tk):
 		self.destroy()
 		exit(0)
 
-class Config(Frame):
-	def __init__(self, master: Union[Tk, Frame]):
+class Controls(Frame):
+	"""The control panel for the program to the left of the output window"""
+	def __init__(self, master: Tk):
+		super().__init__(master, bg=SETTINGS.theme.bg_0, width=200)
+		Heading(self, text="AUTOMATIC MARKER").pack(anchor="n", pady=Window.padding)
+
+		self.pack(side="left", fill="both", expand=True)
+
+class InitialConfig(Frame):
+	def __init__(self, master: Tk | Frame):
 		super().__init__(master, bg=SETTINGS.theme.bg_0)
-		# Heading(self, "CONFIGURATION FILE", 2).grid(row=0)
 		Heading(self, "CONFIGURATION FILE", 2).pack(anchor="n", pady=Window.padding)
 
-		# Text(self, f"Choose a configuration file to specify the files to compile and check and the inputs & expected outputs. If you run this script in a directory containing a file called {SETTINGS.default.config_file} it will be loaded automatically.").grid(row=1)
 		Text(self, f"Choose a configuration file to specify the files to compile and check and the inputs & expected outputs. If you run this script in a directory containing a file called {SETTINGS.default.config_file} it will be loaded automatically.").pack(anchor="n")
 
-		# Button(self, text="CHOOSE", command=self.choose_config).grid(row=2)
 		Button(self, text="CHOOSE", command=self.choose_config).pack(anchor="n", pady=Window.padding)
 
 
-		d = Details(self, "CONFIGURATION FILE", self, level=2, open=True)
-		# d.grid(row=3)
-		d.pack(anchor="n", fill="x", pady=Window.padding)
-		d.set_body(Frame(d))
-		Text(d.body, "Current configuration file:").pack(anchor="n")
-		Button(d.body, text="CHOOSE", command=self.choose_different_config).pack(anchor="n", pady=Window.padding)
+		# d = Details(self, "CONFIGURATION FILE", self, level=2, open=True)
+		# d.pack(anchor="n", fill="x", pady=Window.padding)
+		# d.set_body(Frame(d))
+		# Text(d.body, "Current configuration file:").pack(anchor="n")
+		# Button(d.body, text="CHOOSE", command=self.choose_different_config).pack(anchor="n", pady=Window.padding)
 
 
 
 	def choose_config(self):
 		# open a tkinter file dialog asking for a json file
-		file = fd.askopenfilename(initialdir="./", title="Select Automarker configuration file",filetypes=(("json files","*.json"),("all files","*.*")))
-		print(file)
+		file_path = fd.askopenfilename(initialdir="./", title="Select Automarker configuration file",filetypes=(("json files","*.json"),("all files","*.*")))
+		file = ConfigFile(file_path)
+		print(file.error)
 		# hide options and show AM options if valid
 
 	def choose_different_config(self):

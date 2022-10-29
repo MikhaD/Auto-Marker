@@ -167,13 +167,4 @@ class FileWidget(Frame):
 		self.passed_label.configure(text=f"{value}/{self._trials[1]}")
 
 	def __action(self, e: Event):
-		# self.trials += 1
 		self.icon.found = not self.icon.found
-# class MultiPanel(Frame):
-# 	def __init__(self, master: Union[Widget, Tk], **kwargs: Any):
-# 		super().__init__(master,
-# 			bg=SETTINGS.theme.bg_0,
-# 			**kwargs
-# 		)
-# 		self.panels = []
-# 		self.current = None

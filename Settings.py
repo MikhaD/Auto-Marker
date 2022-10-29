@@ -1,6 +1,8 @@
 import json
 from typing import Any
 
+__all__ = ["SETTINGS", "INPUT_SCHEMA"]
+
 class Settings:
 	def __new__(cls, *args: Any, **kwargs: Any):
 		if not hasattr(cls, 'instance'):

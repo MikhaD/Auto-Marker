@@ -3,7 +3,7 @@ from tkinter import Frame, Label, ttk
 
 from Settings import SETTINGS
 from Widgets import Button, FileWidget, Heading, ScrolledText
-from Panels import Config, Window
+from Panels import Controls, InitialConfig, Window
 #   _    _ _           _                 _____      _
 #  | |  | (_)         | |               /  ___|    | |
 #  | |  | |_ _ __   __| | _____      __ \ `--.  ___| |_ _   _ _ __
@@ -13,25 +13,16 @@ from Panels import Config, Window
 #                                                            | |
 #                                                            |_|
 
-labels: dict[str, Label] = {}
-buttons: dict[str, Button] = {}
-
-ttk.Style
 root = Window("Mikha's Auto Marker")
-root.configure(bg=SETTINGS.theme.bg_0)
 
-options = Frame(root, bg=SETTINGS.theme.bg_0, width=200)
-options.pack(side="left", fill="both", expand=True)
+controls = Controls(root)
 
-labels["am"] = Heading(options, text="AUTOMATIC MARKER")
-labels["am"].pack(anchor="n", pady=Window.padding)
-
-config = Config(options)
+config = InitialConfig(controls)
 config.pack(anchor="n", pady=Window.padding)
 
-FileWidget(options, "Palindrome", 7).pack(anchor="n", padx=Window.padding, pady=Window.padding/2)
-FileWidget(options, "Cycling", 7).pack(anchor="n", padx=Window.padding, pady=Window.padding/2)
-FileWidget(options, "Prime", 7).pack(anchor="n", padx=Window.padding, pady=Window.padding/2)
+# FileWidget(options, "Palindrome", 7).pack(anchor="n", padx=Window.padding, pady=Window.padding/2)
+# FileWidget(options, "Cycling", 7).pack(anchor="n", padx=Window.padding, pady=Window.padding/2)
+# FileWidget(options, "Prime", 7).pack(anchor="n", padx=Window.padding, pady=Window.padding/2)
 # In order for the window to resize correctly, both output and options need to be frames
 out_frame = Frame(root, bg=SETTINGS.theme.bg_0, width=300)
 out_frame.pack(side="right", fill="both", expand=True)

@@ -1,0 +1,175 @@
+{
+	"questions": [
+		{
+			"name": "Counting",
+			"trials": [
+				{
+					"input": [
+						"1",
+						"2"
+					],
+					"output": [
+						"1 1"
+					]
+				},
+				{
+					"input": [
+						"1",
+						"4"
+					],
+					"output": [
+						"2 2"
+					]
+				},
+				{
+					"input": [
+						"1",
+						"11"
+					],
+					"output": [
+						"32 28"
+					]
+				},
+				{
+					"input": [
+						"2",
+						"37",
+						"42"
+					],
+					"output": [
+						"664575 578949",
+						"4493437 3914488"
+					]
+				},
+				{
+					"input": [
+						"2",
+						"63",
+						"100"
+					],
+					"output": [
+						"13763352055 11990037126",
+						"19097683206430457 16637075746565861"
+					]
+				},
+				{
+					"input": [
+						"11",
+						"0",
+						"10",
+						"20",
+						"30",
+						"40",
+						"50",
+						"60",
+						"70",
+						"80",
+						"90",
+						"100"
+					],
+					"output": [
+						"1 0",
+						"22 19",
+						"1001 872",
+						"45761 39865",
+						"2092015 1822473",
+						"95638798 83316385",
+						"4372234274 3808901426",
+						"199881564245 174128175064",
+						"9137808548506 7960463650791",
+						"417745105130365 363921470561980",
+						"19097683206430457 16637075746565861"
+					]
+				},
+				{
+					"input": [
+						"10",
+						"1",
+						"11",
+						"21",
+						"31",
+						"41",
+						"51",
+						"61",
+						"71",
+						"81",
+						"91"
+					],
+					"output": [
+						"0 1",
+						"32 28",
+						"1467 1278",
+						"67066 58425",
+						"3065997 2670964",
+						"140165471 122106097",
+						"6407820771 5582216355",
+						"292940670340 255197244033",
+						"13392109331088 11666626519000",
+						"612235208336399 533352837917926"
+					]
+				}
+			]
+		},
+		{
+			"name": "Palindrome",
+			"trials": [
+				{
+					"input": [
+						"kknshvwgok"
+					],
+					"output": [
+						"3"
+					]
+				},
+				{
+					"input": [
+						"xtlwpetusdvkpiiepkvx"
+					],
+					"output": [
+						"10"
+					]
+				},
+				{
+					"input": [
+						"jdhrigpthsrfzwjljbghtzpzthgbjr"
+					],
+					"output": [
+						"15"
+					]
+				},
+				{
+					"input": [
+						"thwuekqgjyijbkwiatwhvvhwtaigwkbjoymyiyuzhjgqkeuwht"
+					],
+					"output": [
+						"42"
+					]
+				},
+				{
+					"input": [
+						"ivbcbxdhhxzeehdcekohmpitdroshfrvipgeipjctcxpkfjuqqgbsivkigcrlarzkcgmjhpocbemdtqtfzxuqrattxwvqkhbrrpb"
+					],
+					"output": [
+						"35"
+					]
+				},
+				{
+					"input": [
+						"zktffyvbozutmovoffisvxuugkaulhxfilpwbuaoyfzhxxpxwgaljcpdlqihwyiuxfvbcwptjvsnayatorjcyibkrynbzfocpattlnyzrlnejmkhpnqtadzrvrjvmxfrqqtddlzdlfniossqhhrwayldzspdysoubhreqfzfejzsmoebxowfwcvvlycjvipiiljeyjjzshzgiapzamifupeqnsehbhppclouuetvmiyxcsqxbbxfxzbbxqscxyimvteuuolcpphbhesnqepuimazypaigzhszjjyejliipivjcylvvcwfwoxbeomszjefzfqerhbuosydpszdlyawrhhqssoinfldzlddtqqrfxmvjrvrzgdatqhdhaanphkmjenlrzynlttapcofzbnyrkyjayansvjtpwcbvfldpcjlagwxpxxhzfyoaubwplifxhuakguuxvsiffoomtuzobvyfftkzyzxuzwergshcglqvswcrmi"
+					],
+					"output": [
+						"453"
+					]
+				},
+				{
+					"input": [
+						"hocbcoxquxcknsilhzgeciekcruumhhhorndqsyfghwpwgcwoqzomfxvfmtrjdfjdsqwrnpcmcreipjfughnfehirfcyevviwcvnscfanoazqgdhrzsyvedyupivgndatjatipfrnhlrofjkciqzwfgxudavwrlgmefzechdgczdtbclkmlnbevpzzlrjwbiuguqrupzjzbljpjchyetavjqimzsyaoqlzorebueroualvgyxrniqyxayhyxswtuudnyprddnqzipalrqohjxvizlionucgggxdkcuncyxiblbhwsgboockjiiiyaoxdgphadelfygitneicdhisvwzdyopbqcgopatqvbffeyueevnefsjgbzseigvdijxxiplkccgklbglncbjkfffgimbojcwtalunvlkelsncbgbjohzggpkuvpoboeqivfyhpbbmvvmfpcbvmqvgpttluqjcmindfbjryjuzogrhxwqhxztobsevlullgrmtizyqonwpojsigdmjvwwtdvdgpcnelzjakzeiamptmkxjsrfdkarixgztcjiiohisoyjweufnzyojmqwvbitszotmvxkskzdiqqwfyhsmghhbvjmjputjwiarulwgqupyzvrkzxxfgrgdkloinnljuijgjmomxokivlhfcgguorsxzkoekrtorplwcenhtkexocuynvnxazfhcazaiuuselhsnhqurxedpltdoqpitcvqamgykpojhhgrgheoivrflyjeezrfwnefqdfdrhhrdfdqfenwfrzeejylfrvioehgrghhjopkygmaqvctipqodturckeicegzhlisnkcxueblnhagzjlcrjdqpoiyrmjpazbzdoreqnxwxdmvimrbflmksqecohkvgcwzmsfueouvnljoxxldbmthdkmpscimeuxqcqbyalqdejnqmmzmwdleizonnxsvbxlewdugbfkjlsuxlahjdyrqxocbcoh"
+					],
+					"output": [
+						"330"
+					]
+				}
+			]
+		}
+	]
+}
