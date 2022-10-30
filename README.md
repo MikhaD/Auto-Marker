@@ -38,3 +38,6 @@ In order to use this automatic marker you will need python 3 and a file containi
 }
 ```
 At the moment it only works with Java code, but I plan to add support for python in the near future.
+## technical debt
+- Modify ascii art code to push letters together until they touch (see Wo)
+- Add numbers to ascii art alphabet
