@@ -1,5 +1,6 @@
 # Auto Marker
 ![min version](https://img.shields.io/static/v1?label=python&message=v10.0%2B&color=3776ab&logo=python)
+![version](https://img.shields.io/badge/version-0.0.0-orange)
 
 This is a tool to automatically validate the correctness of your code by passing it input via the command line and comparing the output to the expected output. It is designed to be similar to the Automarker available to Computer Science students at the University of Cape Town via Vula.
 ## Inspiration
