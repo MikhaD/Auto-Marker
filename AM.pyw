@@ -1,21 +1,23 @@
 
 from tkinter import Frame
+from sys import argv
 
 from Settings import SETTINGS
 from Widgets import ScrolledText
 from Panels import ControlsFrame, Window
-#   _    _ _           _                 _____      _
-#  | |  | (_)         | |               /  ___|    | |
-#  | |  | |_ _ __   __| | _____      __ \ `--.  ___| |_ _   _ _ __
-#  | |/\| | | "_ \ / _` |/ _ \ \ /\ / /  `--. \/ _ \ __| | | | "_ \
-#  \  /\  / | | | | (_| | (_) \ V  V /  /\__/ /  __/ |_| |_| | |_) |
-#   \/  \/|_|_| |_|\__,_|\___/ \_/\_/   \____/ \___|\__|\__,_| .__/
-#                                                            | |
-#                                                            |_|
+from ConfigFile import ConfigFile
+
 
 root = Window("Mikha's Auto Marker")
 
-controls = ControlsFrame(root)
+if (len(argv) > 1):
+	conf = ConfigFile(argv[1])
+	if conf.valid:
+		controls = ControlsFrame(root, conf)
+	else:
+		controls = ControlsFrame(root)
+else:
+	controls = ControlsFrame(root)
 
 
 # FileWidget(options, "Palindrome", 7).pack(anchor="n", padx=Window.padding, pady=Window.padding/2)

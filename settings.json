@@ -1,7 +1,8 @@
 {
 	"default": {
 		"theme": "vula-dark",
-		"config-file": "inputs.json"
+		"config-file": "inputs.json",
+		"accepted-file-extensions": []
 	},
 	"style": {
 		"theme": "vula-dark",

@@ -1,7 +1,12 @@
 import json
 from typing import Any
 
-__all__ = ["SETTINGS", "INPUT_SCHEMA"]
+__all__ = ["SETTINGS", "FILE_TYPES"]
+
+FILE_TYPES = {
+	"Java": "java",
+	"Python": "py"
+}
 
 class Settings:
 	def __new__(cls, *args: Any, **kwargs: Any):
@@ -10,9 +15,8 @@ class Settings:
 		return cls.__instance
 
 	def __init__(self, file: str):
-		f = open(file, "r")
-		data = json.load(f)
-		f.close()
+		with open(file, "r") as f:
+			data = json.load(f)
 		self.default = Defaults(data["default"])
 		self.themes = {i: Theme(i, data["style"]["themes"][i]) for i in data["style"]["themes"]}
 		if "theme" in data["style"] and data["style"]["theme"] in self.themes:
@@ -37,6 +41,9 @@ class Settings:
 
 
 class Defaults:
+	theme: str
+	config_file: str
+	accepted_file_extensions: dict[str, bool]
 	def __new__(cls, *args: Any, **kwargs: Any):
 		if not hasattr(cls, 'instance'):
 			cls.__instance = super(Defaults, cls).__new__(cls)
@@ -45,9 +52,13 @@ class Defaults:
 	def __init__(self, obj: dict):
 		self.theme = obj["theme"]
 		self.config_file = obj["config-file"]
+		self.accepted_file_extensions = {i: i in obj["accepted-file-extensions"] for i in FILE_TYPES}
 
 	def obj(self) -> dict:
-		return {"theme": self.theme, "config-file": self.config_file}
+		return {
+			"theme": self.theme,
+			"config-file": self.config_file,
+			"accepted-file-extensions": [i for i in self.accepted_file_extensions if self.accepted_file_extensions[i]]}
 
 
 class Theme:

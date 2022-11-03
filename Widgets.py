@@ -139,7 +139,7 @@ class FileIcon(Canvas):
 		self.create_line((18, 12), (8, 22), width=4, fill=SETTINGS.theme.bg_2)
 
 class FileWidget(Frame):
-	def __init__(self, master: Union[Widget, Tk], filename: str, trials: int, **kwargs: Any):
+	def __init__(self, master: Widget | Tk, filename: str, trials: int, is_found: bool = False, **kwargs: Any):
 		super().__init__(master,
 			bg=SETTINGS.theme.bg_2,
 			cursor="hand2",
@@ -147,7 +147,7 @@ class FileWidget(Frame):
 		)
 		self.bind("<Button-1>", self.__action)
 
-		self.icon = FileIcon(self, False, width=22, height=27, bg=SETTINGS.theme.bg_2)
+		self.icon = FileIcon(self, is_found, width=22, height=27, bg=SETTINGS.theme.bg_2)
 		self.icon.pack(side="left", padx=5, pady=5)
 		self.title = Heading(self, filename, 3, code=True, bg=SETTINGS.theme.bg_2, width=30, anchor="w", command=self.__action)
 		self.title.pack(side="left", padx=10)
@@ -168,3 +168,59 @@ class FileWidget(Frame):
 
 	def __action(self, e: Event):
 		self.icon.found = not self.icon.found
+
+class CheckBox(Frame):
+	def __init__(self, master: Tk | Widget, text: str, value: str | int, checked: bool = False, command: Callable[[str | int, bool], None] | None = None, **kwargs: Any):
+		super().__init__(master,
+			bg=SETTINGS.theme.bg_0,
+			cursor="hand2",
+			**kwargs
+		)
+		self.value = value
+		self.__command = command
+		self.bind("<Button-1>", self.__action)
+
+		self.box = Frame(self, width=20, height=20, bg=SETTINGS.theme.bg_3)
+		self.box.pack(side="left", padx=5, pady=5)
+
+		self.check = Frame(self.box, width=10, height=10, bg=SETTINGS.theme.fg_0)
+
+		self.checked = checked
+
+		self.title = Heading(self, text, 3, code=True, bg=SETTINGS.theme.bg_0, command=self.__action)
+		self.title.pack(side="left", padx=5)
+
+	def __action(self, e: Event):
+		self.checked = not self.checked
+		if self.__command: self.__command(self.value, self.checked)
+
+	@property
+	def checked(self) -> bool:
+		return self.__checked
+
+	@checked.setter
+	def checked(self, value: bool):
+		self.__checked = value
+		if self.__checked:
+			self.check.pack(padx=5, pady=5)
+		else:
+			self.check.pack_forget()
+
+class CheckBoxPanel(Frame):
+	checkboxes: list[CheckBox]
+	def __init__(self, master: Widget | Tk, labels: list[str], values: list[str | int], **kwargs: Any):
+		assert len(labels) == len(values), "There should be the same number of values as there are labels"
+		super().__init__(master, bg=SETTINGS.theme.bg_0, **kwargs)
+		self.checkboxes = []
+		for label, value in zip(labels, values):
+			self.checkboxes.append(CheckBox(self, label, value, value in SETTINGS.default.accepted_file_extensions, command=self.on_checkbox_click))
+			self.checkboxes[-1].pack(anchor="w", fill="x")
+
+		self.pack(anchor="n", fill="x")
+
+	def on_checkbox_click(self, value: str | int, checked: bool):
+		SETTINGS.default.accepted_file_extensions[str(value)] = checked
+
+	@property
+	def values(self) -> list[str | int]:
+		return [checkbox.value for checkbox in self.checkboxes if checkbox.checked]
