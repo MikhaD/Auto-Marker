@@ -9,15 +9,17 @@ from ConfigFile import ConfigFile
 
 
 root = Window("Mikha's Auto Marker")
-
+conf = None
 if (len(argv) > 1):
 	conf = ConfigFile(argv[1])
-	if conf.valid:
-		controls = ControlsFrame(root, conf)
-	else:
-		controls = ControlsFrame(root)
-else:
-	controls = ControlsFrame(root)
+	print(1, conf.error)
+if not conf or not conf.valid:
+	conf = ConfigFile(SETTINGS.default.config_file)
+	print(2, conf.error)
+if conf and not conf.valid:
+	conf = None
+	print(3, conf)
+controls = ControlsFrame(root, conf)
 
 
 # FileWidget(options, "Palindrome", 7).pack(anchor="n", padx=Window.padding, pady=Window.padding/2)
