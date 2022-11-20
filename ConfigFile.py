@@ -21,7 +21,6 @@ INPUT_SCHEMA = {
 class ConfigFile:
 	__path: Path
 	questions: list[dict]
-	question_names: tuple[str, ...]
 	valid: bool
 	__error: str
 	def __init__(self, file: str):
@@ -41,9 +40,9 @@ class ConfigFile:
 			self.error = "Path is not a file"
 			return
 		try:
-			self.questions = json.load(open(self.__path, "r"))
-			assert_valid(self.questions, INPUT_SCHEMA)
-			self.question_names = tuple((question["name"] for question in self.questions["questions"]))
+			q = json.load(open(self.__path, "r"))
+			assert_valid(q, INPUT_SCHEMA)
+			self.questions = q["questions"]
 		except json.decoder.JSONDecodeError:
 			self.error = f"{self.__path.name} is not a valid JSON file"
 			return
@@ -53,8 +52,13 @@ class ConfigFile:
 			self.error = f"Type mismatch in {self.__path.name}: {e}"
 
 	@cached_property
-	def directory(self):
+	def path(self) -> str:
+		"""The file path of the config file"""
 		return self.__path.parent.as_posix()
+
+	@cached_property
+	def short_path(self) -> str:
+		return (".../" if len(self.__path.parts) > 3 else "") + "/".join(self.__path.parts[-3:])
 
 	@property
 	def error(self) -> str:
