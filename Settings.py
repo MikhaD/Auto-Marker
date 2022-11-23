@@ -26,10 +26,12 @@ class Settings:
 			else:
 				self.theme = self.themes[self.default.theme]
 			self.font = Font(data["font"])
-		except Exception:
+		except Exception as e:
 			self.default = Defaults()
 			self.themes = {self.default.theme: Theme(self.default.theme)}
 			self.font = Font()
+			self.theme = self.themes[self.default.theme]
+			print("Failed to load settings file, using defaults", e)
 
 	def obj(self) -> dict:
 		return {
@@ -47,10 +49,13 @@ class Settings:
 
 
 class Defaults:
+	SCRIPT_PATHS = {}
+	TIMEOUT = 1
 	THEME = "vula-dark"
 	CONFIG_FILE = "inputs.json"
 	ACCEPTED_FILE_EXTENSIONS = {Settings.FILE_TYPES[i]: True for i in Settings.FILE_TYPES}
 
+	script_paths: dict[str, str]
 	accepted_file_extensions: dict[str, bool]
 	def __new__(cls, *args: Any, **kwargs: Any):
 		if not hasattr(cls, 'instance'):
@@ -61,19 +66,27 @@ class Defaults:
 		if obj != None:
 			self.theme = obj["theme"]
 			self.config_file = obj["config-file"]
+			self.timeout = obj["timeout"]
 			if not os.path.exists(self.config_file):
 				self.config_file = Defaults.CONFIG_FILE
+				self.script_paths = Defaults.SCRIPT_PATHS
+			else:
+				self.script_paths = obj["script-paths"]
 			self.accepted_file_extensions = {Settings.FILE_TYPES[i]: Settings.FILE_TYPES[i] in obj["accepted-file-extensions"] for i in Settings.FILE_TYPES}
 		else:
 			# default values
 			self.theme = Defaults.THEME
 			self.config_file = Defaults.CONFIG_FILE
+			self.timeout = Defaults.TIMEOUT
+			self.script_paths = Defaults.SCRIPT_PATHS
 			self.accepted_file_extensions = Defaults.ACCEPTED_FILE_EXTENSIONS
 
 	def obj(self) -> dict:
 		return {
 			"theme": self.theme,
 			"config-file": self.config_file,
+			"script-paths": self.script_paths,
+			"timeout": self.timeout,
 			"accepted-file-extensions": [i for i in self.accepted_file_extensions if self.accepted_file_extensions[i]]
 		}
 

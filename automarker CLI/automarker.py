@@ -56,6 +56,7 @@ if __name__ == "__main__":
 		if valid:
 			for j, trial in enumerate(question["trials"], 1):
 				print(f"Trial {j:>2}: ", end="")
+				out = b""
 				try:
 					out = subprocess.check_output(["java", question["name"]], input="\n".join(trial["input"]).encode(), stderr=subprocess.STDOUT, timeout=TIMEOUT)
 					if out.decode().strip() == "\n".join(trial["output"]):

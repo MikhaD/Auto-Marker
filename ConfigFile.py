@@ -52,9 +52,14 @@ class ConfigFile:
 			self.error = f"Type mismatch in {self.__path.name}: {e}"
 
 	@cached_property
+	def directory(self) -> str:
+		"""The file path to the dir containing the config file"""
+		return self.__path.parent.as_posix()
+
+	@cached_property
 	def path(self) -> str:
 		"""The file path of the config file"""
-		return self.__path.parent.as_posix()
+		return self.__path.as_posix()
 
 	@cached_property
 	def short_path(self) -> str:
